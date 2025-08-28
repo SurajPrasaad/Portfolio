@@ -1,6 +1,12 @@
 import User from "../models/User.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Achievement from "../models/Achievment.model.js";
+import SkillModel from "../models/Skill.model.js";
+import experienceModel from "../models/experience.model.js";
+import EducationModel from "../models/Education.model.js";
+import BlogModel from "../models/Blog.model.js";
+import ProjectModel from "../models/Project.model.js";
 
 // -------------------- REGISTER --------------------
 export const registerUser = async (req, res) => {
@@ -118,5 +124,36 @@ export const deleteUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Fetch User basic info
+    const user = await User.findById(userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Fetch related data
+    const achievements = await Achievement.find({ createdBy: userId });
+    const skills = await SkillModel.find({ createdBy: userId });
+    const experiences = await experienceModel.find({ createdBy: userId });
+    const educations = await EducationModel.find({ createdBy: userId });
+    const blogs = await BlogModel.find({ createdBy: userId });
+    const projects = await ProjectModel.find({ createdBy: userId });
+
+    res.status(200).json({
+      user,
+      achievements,
+      skills,
+      experiences,
+      educations,
+      blogs,
+      projects,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching profile", error });
   }
 };

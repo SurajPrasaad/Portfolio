@@ -15,30 +15,30 @@ application.use(
   "/api/users",
   (await import("./routes/user.routes.js")).default
 );
-// application.use(
-//   "/api/blogs",
-//   (await import("./routes/blog.routes.js")).default
-// );
-// application.use(
-//   "/api/projects",
-//   (await import("./routes/project.routes.js")).default
-// );
-// application.use(
-//   "/api/skills",
-//   (await import("./routes/skill.routes.js")).default
-// );
-// application.use(
-//   "/api/achievements",
-//   (await import("./routes/achievement.routes.js")).default
-// );
-// application.use(
-//   "/api/education",
-//   (await import("./routes/education.routes.js")).default
-// );
-// application.use(
-//   "/api/contacts",
-//   (await import("./routes/contact.routes.js")).default
-// );
+application.use(
+  "/api/blogs",
+  (await import("./routes/blog.routes.js")).default
+);
+application.use(
+  "/api/projects",
+  (await import("./routes/project.routes.js")).default
+);
+application.use(
+  "/api/skills",
+  (await import("./routes/skill.routes.js")).default
+);
+application.use(
+  "/api/achievements",
+  (await import("./routes/achievment.routes.js")).default
+);
+application.use(
+  "/api/education",
+  (await import("./routes/education.routes.js")).default
+);
+application.use(
+  "/api/experience",
+  (await import("./routes/experience.routes.js")).default
+);
 
 connectDB();
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { addAchievement, getAchievements, updateAchievement, deleteAchievement } from '../controllers/achievementController.js';
+import { addAchievement, getAchievements, updateAchievement, deleteAchievement} from "../controllers/achievmentController.js"
 import { authMiddleware} from '../middlewares/auth.middleware.js';
 import { adminMiddleware } from '../middlewares/admin.middleware.js';
 
