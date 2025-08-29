@@ -8,7 +8,9 @@ import EducationModel from "../models/Education.model.js";
 import BlogModel from "../models/Blog.model.js";
 import ProjectModel from "../models/Project.model.js";
 
-// -------------------- REGISTER --------------------
+/*---------------------------------------------------------
+====================  Get User Register ====================
+---------------------------------------------------------*/
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role, profileImage, bio, socialLinks } = req.body;
@@ -38,7 +40,9 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// -------------------- LOGIN --------------------
+/*---------------------------------------------------------
+====================  LOGIN  ====================
+---------------------------------------------------------*/
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -59,7 +63,9 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// -------------------- GET USER --------------------
+/*---------------------------------------------------------
+====================  Get User  ==========================
+---------------------------------------------------------*/
 export const getUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,7 +78,9 @@ export const getUser = async (req, res) => {
   }
 };
 
-// -------------------- UPDATE USER --------------------
+/*---------------------------------------------------------
+====================  Update User Profile ================
+---------------------------------------------------------*/
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -106,7 +114,9 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// -------------------- DELETE USER --------------------
+/*---------------------------------------------------------
+    ====================  Delete User ====================
+---------------------------------------------------------*/
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -127,7 +137,9 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-
+/*---------------------------------------------------------
+====================  Get User Profile ====================
+---------------------------------------------------------*/
 export const getUserProfile = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -137,11 +149,11 @@ export const getUserProfile = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     // Fetch related data
-    const achievements = await Achievement.find({ createdBy: userId });
+    const achievements = await Achievement.find({ user: userId });
     const skills = await SkillModel.find({ createdBy: userId });
     const experiences = await experienceModel.find({ createdBy: userId });
     const educations = await EducationModel.find({ createdBy: userId });
-    const blogs = await BlogModel.find({ createdBy: userId });
+    const blogs = await BlogModel.find({ author: userId });
     const projects = await ProjectModel.find({ createdBy: userId });
 
     res.status(200).json({
