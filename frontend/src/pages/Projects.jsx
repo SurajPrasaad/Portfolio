@@ -1,37 +1,35 @@
 // src/components/Projects.jsx
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 
-const projectsData = [
-  {
-    _id: "1",
-    title: "E-commerce Store",
-    description: "A full-stack MERN e-commerce platform with Stripe payments",
-    technologies: ["React", "Node.js", "MongoDB", "Express", "Stripe"],
-    githubLink: "https://github.com/yourusername/ecommerce-store",
-    liveLink: "https://ecommerce-store.vercel.app",
-    images: ["https://example.com/image1.png", "https://example.com/image2.png"],
-  },
-  {
-    _id: "2",
-    title: "Portfolio Website",
-    description: "Personal portfolio website built with React and Tailwind CSS",
-    technologies: ["React", "Tailwind CSS"],
-    githubLink: "https://github.com/yourusername/portfolio",
-    liveLink: "https://yourportfolio.com",
-    images: ["https://example.com/portfolio.png"],
-  },
-  {
-    _id: "3",
-    title: "Chat App",
-    description: "Real-time chat application using Socket.io",
-    technologies: ["Node.js", "Express", "Socket.io", "React"],
-    githubLink: "https://github.com/yourusername/chat-app",
-    liveLink: "https://chat-app.vercel.app",
-    images: ["https://example.com/chat.png"],
-  },
-];
-
 export default function Projects() {
+  const [projectsData, setProjectsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try { 
+        const response = await fetch("http://localhost:8000/api/projects");
+        if (!response.ok) throw new Error("Failed to fetch projects");
+        const data = await response.json();
+
+        // Adjust depending on your API response structure
+        // Example: { success: true, projects: [...] }
+        setProjectsData(data.projects || []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) return <p className="text-center py-20">Loading projects...</p>;
+  if (error) return <p className="text-center py-20 text-red-500">{error}</p>;
+
   return (
     <section id="projects" className="w-full min-h-screen py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -40,6 +38,12 @@ export default function Projects() {
         </h2>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {projectsData.length === 0 && (
+            <p className="col-span-full text-center text-gray-500">
+              No projects to display
+            </p>
+          )}
+
           {projectsData.map((project, index) => (
             <motion.div
               key={project._id}
